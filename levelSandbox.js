@@ -51,7 +51,20 @@ class LevelSandbox {
   getBlocksCount() {
     let self = this;
     // Add your code here
-    console.log('here?');
+    return new Promise((resolve, reject) => {
+      let count = 0;
+      self.db
+        .createReadStream()
+        .on('data', data => {
+          count++;
+        })
+        .on('error', err => {
+          reject(err);
+        })
+        .on('close', () => {
+          resolve(count);
+        });
+    });
   }
 }
 
